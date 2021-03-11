@@ -3,6 +3,7 @@ package Model;
 public class Node {
 
     private boolean A;
+    private int id;
     private int cpuCores = 0;
     private int ram = 0;
     private int occupiedCPU = 0;
@@ -29,5 +30,9 @@ public class Node {
 
     public void setOccupiedRAM(int occupiedRAM) {
         this.occupiedRAM = occupiedRAM;
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 }

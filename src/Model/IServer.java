@@ -3,13 +3,22 @@ package Model;
 public interface IServer {
 
     //Getters
-    public String getModel();
 
-    public int getCpuCores();
+    String getModel();
 
-    public int getRam();
+    int getCpuCores();
 
-    public int getCost();
+    int getRam();
 
-    public int getDailyCost();
+    int getCost();
+
+    int getDailyCost();
+    Node getA();
+
+    Node getB();
+
+    //Add virtualMachine to Nodes
+    void addVirtualMachine(IVirtualMachine vm);
+
+    Node selectNode();
 }
