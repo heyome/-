@@ -1,13 +1,13 @@
 package Model;
 
 public class Server implements IServer{
-    private String model;
+    private static String model;
     private int cpuCores;
     private int ram;
     private int cost;
     private int dailyCost;
-    private int occupiedCPUA = 0;
-    private int occupiedCPUB = 0;
+    private Node a = new Node(true);
+    private Node b = new Node(false);
 
     public Server(String model,int cpuCores,int ram, int cost, int dailyCost) {
         this.model = model;
@@ -15,6 +15,10 @@ public class Server implements IServer{
         this.ram = ram;
         this.cost = cost;
         this.dailyCost = dailyCost;
+        this.a.setCpuCores(cpuCores/2);
+        this.b.setCpuCores(cpuCores/2);
+        this.a.setRam(ram/2);
+        this.b.setRam(ram/2);
     }
 
 
@@ -39,14 +43,6 @@ public class Server implements IServer{
         return dailyCost;
     }
 
-    //Change occupied CPU volume
-    public void setOccupiedCPUA(int occupiedCPUA) {
-        this.occupiedCPUA = occupiedCPUA;
-    }
 
-    public void setOccupiedCPUB(int occupiedCPUB) {
-        this.occupiedCPUB = occupiedCPUB;
-    }
 
-    //Change occupied
 }
