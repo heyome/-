@@ -3,7 +3,7 @@ package Model;
 public class Node {
 
     private boolean A;
-    private int id;
+    private int id = -1;
     private int cpuCores = 0;
     private int ram = 0;
     private int occupiedCPU = 0;

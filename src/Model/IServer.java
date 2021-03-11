@@ -21,4 +21,6 @@ public interface IServer {
     void addVirtualMachine(IVirtualMachine vm);
 
     Node selectNode();
+
+    void setId(int id);
 }

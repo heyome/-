@@ -5,16 +5,15 @@ public class VirtualMachineD implements IVirtualMachine{
     private static String model;
     private int cpuCores;
     private int ram;
-    private int ID;
+    private int id = -1;
     private Node positionA = null;
     private Node positionB = null;
     private boolean ifS = false;
 
-    public VirtualMachineD(String model, int cpuCores, int ram, int ID) {
+    public VirtualMachineD(String model, int cpuCores, int ram) {
         this.model = model;
         this.cpuCores = cpuCores;
         this.ram = ram;
-        this.ID = ID;
     }
 
     @Override
@@ -23,4 +22,16 @@ public class VirtualMachineD implements IVirtualMachine{
         this.positionB = server.getB();
         server.addVirtualMachine(this);
     }
+
+    @Override
+    public boolean ifS() {
+        return false;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
 }
