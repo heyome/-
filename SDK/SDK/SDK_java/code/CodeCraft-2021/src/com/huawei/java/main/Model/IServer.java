@@ -13,6 +13,8 @@ public interface IServer {
     int getCost();
 
     int getDailyCost();
+
+    //get nodes(节点）
     Node getA();
 
     Node getB();

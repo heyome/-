@@ -1,3 +1,5 @@
+package com.huawei.java.main;
+
 public class Main {
     public static void main(String[] args) {
         // TODO: read standard input
