@@ -1,4 +1,4 @@
-package Model;
+package com.huawei.java.main.Model;
 
 public class VirtualMachineD implements IVirtualMachine{
 

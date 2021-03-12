@@ -1,4 +1,4 @@
-package Model;
+package com.huawei.java.main.Model;
 
 public class Server implements IServer{
     private static String model;
