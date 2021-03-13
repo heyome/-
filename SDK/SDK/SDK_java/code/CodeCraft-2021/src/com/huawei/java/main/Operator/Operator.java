@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Operator implements IOperator{
-    List<IServer> servers = new ArrayList<IServer>();
-    HashMap<String,IVirtualMachine> vms = new HashMap<String, IVirtualMachine>();
-    HashMap<Integer,IServer> boughtServer = new HashMap<Integer,IServer>();
-    HashMap<Integer,IVirtualMachine> assignedVM = new HashMap<Integer,IVirtualMachine>();
+    private List<IServer> servers = new ArrayList<IServer>();
+    private HashMap<String,IVirtualMachine> vms = new HashMap<String, IVirtualMachine>();
+    private HashMap<Integer,IServer> boughtServer = new HashMap<Integer,IServer>();
+    private HashMap<Integer,IVirtualMachine> assignedVM = new HashMap<Integer,IVirtualMachine>();
 
     @Override
     public void addServer(IServer server) {
