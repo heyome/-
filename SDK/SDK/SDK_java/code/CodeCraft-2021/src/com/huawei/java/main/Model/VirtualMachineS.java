@@ -16,8 +16,7 @@ public class VirtualMachineS implements IVirtualMachine{
 
     @Override
     public void setPosition(IServer server) {
-        this.position = server.selectNode();
-        server.addVirtualMachine(this);
+        this.position = server.selectNode(this);
     }
 
     @Override
@@ -38,5 +37,20 @@ public class VirtualMachineS implements IVirtualMachine{
     @Override
     public void resetPosition() {
         this.position = null;
+    }
+
+    @Override
+    public int getCpuCores() {
+        return cpuCores;
+    }
+
+    @Override
+    public int getRam() {
+        return ram;
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 }

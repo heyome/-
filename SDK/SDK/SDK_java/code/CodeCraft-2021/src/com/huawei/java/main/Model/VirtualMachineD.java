@@ -20,7 +20,6 @@ public class VirtualMachineD implements IVirtualMachine{
     public void setPosition(IServer server) {
         this.positionA = server.getA();
         this.positionB = server.getB();
-        server.addVirtualMachine(this);
     }
 
     @Override
@@ -44,4 +43,18 @@ public class VirtualMachineD implements IVirtualMachine{
         this.positionB = null;
     }
 
+    @Override
+    public int getCpuCores() {
+        return cpuCores;
+    }
+
+    @Override
+    public int getRam() {
+        return ram;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
 }

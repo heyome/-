@@ -30,8 +30,12 @@ public class Operator implements IOperator{
     }
 
     @Override
-    public void migrateToServer(int serverId, int vmId) {
-
+    public void migrateToServer(int serverIdFrom, int serverIdTo, int vmId) {
+        this.deleteVMFromServer(serverIdFrom,vmId);
+        IServer server = this.boughtServer.get(serverIdTo);
+        IVirtualMachine vm = this.assignedVM.get(vmId);
+        vm.setPosition(server);
+        server.addVirtualMachine(vm);
     }
 
     @Override

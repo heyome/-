@@ -62,13 +62,42 @@ public class Server implements IServer{
     @Override
     //Add virtualMachine to Nodes
     public void addVirtualMachine(IVirtualMachine vm) {
-        //TODO
+        if (vm.ifS()) {
+            if (vm.getRam() >= vm.getCpuCores()){
+                if (this.a.getOccupiedRAM() <= this.b.getOccupiedRAM()) {
+                    this.a.addVirtualMachine(vm);
+                } else {
+                    this.b.addVirtualMachine(vm);
+                }
+            } else {
+                if (this.a.getOccupiedCPU() <= this.b.getOccupiedCPU()) {
+                    this.a.addVirtualMachine(vm);
+                } else {
+                    this.b.addVirtualMachine(vm);
+                }
+            }
+        }
+        else {
+            this.a.addVirtualMachine(vm);
+            this.b.addVirtualMachine(vm);
+        }
     }
 
     @Override
-    public Node selectNode() {
-        //TODO
-        return null;
+    public Node selectNode(IVirtualMachine vm) {
+        if (vm.getRam() >= vm.getCpuCores()){
+            if (this.a.getOccupiedRAM() <= this.b.getOccupiedRAM()) {
+                return this.a;
+            } else {
+                return this.b;
+            }
+        } else {
+            if (this.a.getOccupiedCPU() <= this.b.getOccupiedCPU()) {
+                return this.a;
+            } else {
+                return this.b;
+            }
+        }
 
     }
 
@@ -81,6 +110,11 @@ public class Server implements IServer{
 
     @Override
     public void deleteVM(int vmId) {
-        //TODO
+        if (this.a.getVms().containsKey(vmId)) {
+            this.a.deleteVM(vmId);
+        }
+        if (this.b.getVms().containsKey(vmId)) {
+            this.b.deleteVM(vmId);
+        }
     }
 }
