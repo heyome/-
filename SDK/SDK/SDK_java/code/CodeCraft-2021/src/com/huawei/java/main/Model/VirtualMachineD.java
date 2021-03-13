@@ -38,4 +38,10 @@ public class VirtualMachineD implements IVirtualMachine{
         return this.model;
     }
 
+    @Override
+    public void resetPosition() {
+        this.positionA = null;
+        this.positionB = null;
+    }
+
 }

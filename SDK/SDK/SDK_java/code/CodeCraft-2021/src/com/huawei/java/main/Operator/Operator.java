@@ -25,6 +25,7 @@ public class Operator implements IOperator{
 
     @Override
     public void buyServer(IServer server, int serverId) {
+        server.setId(serverId);
         this.boughtServer.put(serverId,server);
     }
 
@@ -40,9 +41,14 @@ public class Operator implements IOperator{
         vm.setId(vmId);
         vm.setPosition(server);
         server.addVirtualMachine(vm);
+        this.assignedVM.put(vmId,vm);
     }
 
     @Override
     public void deleteVMFromServer(int serverId, int vmId) {
+        IVirtualMachine vm = this.assignedVM.get(vmId);
+        IServer server = this.boughtServer.get(serverId);
+        server.deleteVM(vmId);
+        vm.resetPosition();
     }
 }

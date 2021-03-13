@@ -78,4 +78,9 @@ public class Server implements IServer{
         this.a.setID(id);
         this.b.setID(id);
     }
+
+    @Override
+    public void deleteVM(int vmId) {
+        //TODO
+    }
 }

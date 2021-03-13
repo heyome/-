@@ -25,4 +25,6 @@ public interface IServer {
     Node selectNode();
 
     void setId(int id);
+
+    void deleteVM(int vmId);
 }

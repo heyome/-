@@ -34,4 +34,9 @@ public class VirtualMachineS implements IVirtualMachine{
     public String getModel() {
         return this.model;
     }
+
+    @Override
+    public void resetPosition() {
+        this.position = null;
+    }
 }

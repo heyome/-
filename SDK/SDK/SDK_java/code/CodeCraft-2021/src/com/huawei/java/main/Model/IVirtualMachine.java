@@ -10,4 +10,5 @@ public interface IVirtualMachine {
 
     String getModel();
 
+    void resetPosition();
 }
