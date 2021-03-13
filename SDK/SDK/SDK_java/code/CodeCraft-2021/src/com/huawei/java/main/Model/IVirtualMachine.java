@@ -7,4 +7,7 @@ public interface IVirtualMachine {
     boolean ifS();
 
     void setId(int id);
+
+    String getModel();
+
 }

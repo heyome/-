@@ -33,4 +33,9 @@ public class VirtualMachineD implements IVirtualMachine{
         this.id = id;
     }
 
+    @Override
+    public String getModel() {
+        return this.model;
+    }
+
 }

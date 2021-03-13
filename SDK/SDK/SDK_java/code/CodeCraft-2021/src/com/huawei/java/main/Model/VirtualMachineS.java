@@ -29,4 +29,9 @@ public class VirtualMachineS implements IVirtualMachine{
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String getModel() {
+        return this.model;
+    }
 }
