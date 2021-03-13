@@ -44,6 +44,5 @@ public class Operator implements IOperator{
 
     @Override
     public void deleteVMFromServer(int serverId, int vmId) {
-
     }
 }
