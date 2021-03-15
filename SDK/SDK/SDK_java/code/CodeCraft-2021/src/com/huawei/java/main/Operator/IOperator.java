@@ -20,4 +20,7 @@ public interface IOperator{
     //从服务器删除虚拟机
     void deleteVMFromServer(int serverId, int vmId);
 
+
+    //输入处理
+    String[] splitString(String s);
 }

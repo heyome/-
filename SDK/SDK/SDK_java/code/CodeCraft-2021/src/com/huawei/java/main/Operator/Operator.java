@@ -55,4 +55,11 @@ public class Operator implements IOperator{
         server.deleteVM(vmId);
         vm.resetPosition();
     }
+
+    @Override
+    public String[] splitString(String s) {
+        s = s.substring(1,s.length()-1);
+        String[] ss = s.split(",");
+        return ss;
+    }
 }
