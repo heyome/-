@@ -3,6 +3,7 @@ package com.huawei.java.main.Operator;
 import com.huawei.java.main.Model.IServer;
 import com.huawei.java.main.Model.IVirtualMachine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IOperator{
@@ -23,4 +24,6 @@ public interface IOperator{
 
     //输入处理
     String[] splitString(String s);
+
+    void setRecords(ArrayList<String>[] records);
 }

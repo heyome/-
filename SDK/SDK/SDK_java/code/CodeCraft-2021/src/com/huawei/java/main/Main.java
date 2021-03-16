@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -25,8 +26,6 @@ public class Main {
         try {
             reader = new BufferedReader(new FileReader(path));
             String serverModels = reader.readLine();
-            int serModels = Integer.parseInt(serverModels);
-            IServer[] servers = new IServer[serModels];
             IOperator operator = new Operator();
 
             int iterations = 0;
@@ -35,12 +34,11 @@ public class Main {
                 String[] ss = operator.splitString(s);
                 IServer server = new Server(ss[0],Integer.parseInt(ss[1]),Integer.parseInt(ss[2]),
                         Integer.parseInt(ss[3]),Integer.parseInt(ss[4]));
-                servers[iterations] = server;
+                operator.addServer(server);
                 s = reader.readLine();
                 iterations++;
             }
 
-            IVirtualMachine[] vms = new IVirtualMachine[Integer.parseInt(s)];
             s = reader.readLine();
             VirtualMachineFactory vmFac = new VirtualMachineFactory();
             iterations = 0;
@@ -48,14 +46,32 @@ public class Main {
                 String[] ss = operator.splitString(s);
                 IVirtualMachine vm = vmFac.getVirtualMachine(ss[0],Integer.parseInt(ss[1]),
                         Integer.parseInt(ss[2]), Integer.parseInt(ss[3]) == 0);
-                vms[iterations] = vm;
+                operator.addVirtualMachine(vm);
 
                 iterations++;
                 s = reader.readLine();
             }
 
-            System.out.println(reader.readLine());
-            System.out.println(reader.readLine());
+
+            HashMap<Integer,String[]> records = new HashMap<Integer,String[]>();
+            iterations = 0;
+            s = reader.readLine();
+            while (s != null) {
+                String[] record = new String[Integer.parseInt(s)];
+                s = reader.readLine();
+                int iter = 0;
+                while (s.contains("(")) {
+                    record[iter] = s;
+                    iter++;
+                    s = reader.readLine();
+                    if (s == null) {
+                        break;
+                    }
+                }
+                records.put(iterations,record);
+                iterations++;
+            }
+            System.out.println(s);
 
             
         } catch (IOException e) {

@@ -12,6 +12,7 @@ public class Operator implements IOperator{
     private HashMap<String,IVirtualMachine> vms = new HashMap<String, IVirtualMachine>();
     private HashMap<Integer,IServer> boughtServer = new HashMap<Integer,IServer>();
     private HashMap<Integer,IVirtualMachine> assignedVM = new HashMap<Integer,IVirtualMachine>();
+    private ArrayList<String>[] records;
 
     @Override
     public void addServer(IServer server) {
@@ -61,5 +62,10 @@ public class Operator implements IOperator{
         s = s.substring(1,s.length()-1);
         String[] ss = s.split(", ");
         return ss;
+    }
+
+    @Override
+    public void setRecords(ArrayList<String>[] records) {
+        this.records = records;
     }
 }
