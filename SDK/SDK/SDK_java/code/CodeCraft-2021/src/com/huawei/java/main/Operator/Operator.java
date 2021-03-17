@@ -71,6 +71,5 @@ public class Operator implements IOperator{
 
     @Override
     public void calculateOptimalBundle() {
-
     }
 }

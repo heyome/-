@@ -28,4 +28,5 @@ public interface IOperator{
     void setRecords(ArrayList<String>[] records);
 
     void calculateOptimalBundle();
+
 }
