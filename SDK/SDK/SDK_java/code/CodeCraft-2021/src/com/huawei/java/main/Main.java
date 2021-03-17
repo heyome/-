@@ -71,6 +71,8 @@ public class Main {
                 records.put(iterations,record);
                 iterations++;
             }
+
+
             System.out.println(s);
 
             

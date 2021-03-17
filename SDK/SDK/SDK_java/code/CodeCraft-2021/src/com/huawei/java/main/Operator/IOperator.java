@@ -26,4 +26,6 @@ public interface IOperator{
     String[] splitString(String s);
 
     void setRecords(ArrayList<String>[] records);
+
+    void calculateOptimalBundle();
 }

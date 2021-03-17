@@ -68,4 +68,9 @@ public class Operator implements IOperator{
     public void setRecords(ArrayList<String>[] records) {
         this.records = records;
     }
+
+    @Override
+    public void calculateOptimalBundle() {
+
+    }
 }
