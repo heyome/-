@@ -72,7 +72,6 @@ public class Main {
                 iterations++;
             }
 
-
             System.out.println(s);
 
         } catch (IOException e) {
