@@ -31,7 +31,7 @@ public interface IOperator{
     void assignedVM();
 
 
-    void setGenesForAdds(int geneNumber);
+    int[][] setGenesForAdds(int geneNumber);
 
     int fitness(int[] genes);
 
