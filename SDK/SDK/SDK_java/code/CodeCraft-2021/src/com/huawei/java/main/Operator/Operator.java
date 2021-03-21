@@ -8,11 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Operator implements IOperator{
+    
     private List<IServer> servers = new ArrayList<IServer>();
     private HashMap<String,IVirtualMachine> vms = new HashMap<String, IVirtualMachine>();
+    
     private HashMap<Integer,IServer> boughtServer = new HashMap<Integer,IServer>();
     private HashMap<Integer,IVirtualMachine> assignedVM = new HashMap<Integer,IVirtualMachine>();
-    private ArrayList<String>[] records;
+    private ArrayList<IVirtualMachine> VMAdds = new ArrayList<IVirtualMachine>();
+    
+    private HashMap<Integer,String[]> records;
 
     @Override
     public void addServer(IServer server) {
@@ -40,13 +44,11 @@ public class Operator implements IOperator{
     }
 
     @Override
-    public void addVMtoServer(int serverId,String vmModel,int vmId) {
+    public void addVMtoServer(int serverId,int vmId) {
         IServer server = this.boughtServer.get(serverId);
-        IVirtualMachine vm = this.vms.get(vmModel);
-        vm.setId(vmId);
+        IVirtualMachine vm = this.assignedVM.get(vmId);
         vm.setPosition(server);
         server.addVirtualMachine(vm);
-        this.assignedVM.put(vmId,vm);
     }
 
     @Override
@@ -65,12 +67,78 @@ public class Operator implements IOperator{
     }
 
     @Override
-    public void setRecords(ArrayList<String>[] records) {
+    public void setRecords(HashMap<Integer,String[]> records) {
         this.records = records;
+    }
+
+    
+    @Override
+    public void assignedVM() {
+
+        for (Integer key: records.keySet()) {
+            String[] vmsToAssign = records.get(key);
+            for (int i = 0; i < vmsToAssign.length; i++) {
+                if (vmsToAssign[0] == "add") {
+                    String vmModel = vmsToAssign[1];
+                    IVirtualMachine vm = vms.get(vmModel);
+                    Integer vmId = Integer.parseInt(vmsToAssign[2]);
+                    this.assignedVM.put(vmId,vm);
+                    this.VMAdds.add(vm);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void setGenesForAdds(int geneNumber) {
+
+    }
+
+    @Override
+    public int fitness(int[] genes) {
+        ArrayList<IServer> servers = new ArrayList<IServer>();
+
+        int ramNeededA = 0;
+        int cpuNeededA = 0;
+        int ramNeededB = 0;
+        int cpuNeededB = 0;
+        for (int i = 0; i < genes.length; i++) {
+            IVirtualMachine vm = this.VMAdds.get(i);
+            if (vm.ifS()) {
+                if (cpuNeededA <= cpuNeededB){
+                    cpuNeededA += vm.getCpuCores();
+                    ramNeededA += vm.getRam();
+                } else {
+                    cpuNeededB += vm.getCpuCores();
+                    ramNeededB += vm.getRam();
+                }
+            }
+
+            if (genes[i] == 1) {
+
+                int cost = 1000000000;
+                IServer suitableServer = null;
+                for (IServer server : servers) {
+                    if (server.getCost() <= cost) {
+                        if (server.getCpuCores()/2 >= cpuNeededA && server.getCpuCores()/2 >= cpuNeededB
+                                && server.getRam()/2 >= ramNeededA && server.getRam()/2 >= ramNeededB) {
+                            suitableServer = server;
+                            cost = server.getCost();
+                        }
+                    }
+                }
+                if (suitableServer == null) {
+                    return 2000000000;
+                }
+            }
+        }
+        return 0;
     }
 
     @Override
     public void calculateOptimalBundle() {
-
+        for (int i = 0; i < records.keySet().size();i++) {
+            
+        }
     }
 }

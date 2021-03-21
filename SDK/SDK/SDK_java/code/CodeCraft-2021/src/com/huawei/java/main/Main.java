@@ -72,6 +72,8 @@ public class Main {
                 iterations++;
             }
 
+            operator.setRecords(records);
+
             System.out.println(s);
 
         } catch (IOException e) {

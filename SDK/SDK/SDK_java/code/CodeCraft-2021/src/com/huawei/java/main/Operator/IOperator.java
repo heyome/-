@@ -4,6 +4,7 @@ import com.huawei.java.main.Model.IServer;
 import com.huawei.java.main.Model.IVirtualMachine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public interface IOperator{
@@ -17,7 +18,7 @@ public interface IOperator{
     //迁移虚拟机到另一个服务器
     void migrateToServer(int serverIdFrom, int serverIdTo, int vmId);
     //添加虚拟机到服务器上
-    void addVMtoServer(int serverId,String vmModel,int vmId);
+    void addVMtoServer(int serverId,int vmId);
     //从服务器删除虚拟机
     void deleteVMFromServer(int serverId, int vmId);
 
@@ -25,7 +26,14 @@ public interface IOperator{
     //输入处理
     String[] splitString(String s);
 
-    void setRecords(ArrayList<String>[] records);
+    void setRecords(HashMap<Integer,String[]> records);
+
+    void assignedVM();
+
+
+    void setGenesForAdds(int geneNumber);
+
+    int fitness(int[] genes);
 
     void calculateOptimalBundle();
 
