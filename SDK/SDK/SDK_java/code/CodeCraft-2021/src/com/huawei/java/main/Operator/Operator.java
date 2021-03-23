@@ -20,6 +20,11 @@ public class Operator implements IOperator{
     private HashMap<Integer,String[]> records;
     private ArrayList<Integer> addsOnDay = new ArrayList<Integer>();
 
+    private int optimalScore = 2000000000;
+    private ArrayList<IServer> optimalServers;
+    private int[] optimalGene;
+
+
     @Override
     public void addServer(IServer server) {
         this.servers.add(server);
@@ -113,7 +118,7 @@ public class Operator implements IOperator{
     }
 
     @Override
-    public int fitness(int[] genes) {
+    public ArrayList<IServer> fitness(int[] genes) {
 
         ArrayList<IServer> serversForGenes = new ArrayList<IServer>();
 
@@ -147,14 +152,22 @@ public class Operator implements IOperator{
                     }
                 }
                 if (suitableServer == null) {
-                    return 2000000000;
+                    return null;
                 } else {
                     serversForGenes.add(suitableServer);
                 }
             }
         }
 
+        return  serversForGenes;
+    }
+
+    @Override
+    public int fitnessScore(ArrayList<IServer> serversForGenes) {
         int total = 0;
+        if (serversForGenes == null) {
+            return 2000000000;
+        }
         for (IServer server: serversForGenes) {
             total += server.getCost();
         }
@@ -162,9 +175,98 @@ public class Operator implements IOperator{
     }
 
     @Override
-    public void calculateOptimalBundle() {
-        for (int i = 0; i < records.keySet().size();i++) {
-            
+    public int[][] select(int[][] genes, int geneNumberLeft) {
+        int vmNumber = VMAdds.size();
+        int[][] result = new int[geneNumberLeft][vmNumber];
+
+        HashMap<Integer,Integer> fitnessForGenes = new HashMap<Integer,Integer>();
+
+        for (int i = 0; i < genes.length; i++) {
+            ArrayList<IServer> serversForGenes = this.fitness(genes[i]);
+            int score = this.fitnessScore(serversForGenes);
+            fitnessForGenes.put(i,score);
         }
+
+        int[] smallestIndexes = this.findSmallestIndexes(fitnessForGenes,geneNumberLeft);
+
+        for (int i = 0; i < smallestIndexes.length; i++) {
+            for (int j = 0; j < vmNumber; j++) {
+                int x = fitnessForGenes.get(smallestIndexes[i]);
+                result[i][j] = genes[x][j];
+            }
+        }
+
+        int optimalScoreInThisGeneration = fitnessForGenes.get(smallestIndexes[0]);
+        if (optimalScoreInThisGeneration < this.optimalScore) {
+            this.optimalScore = optimalScoreInThisGeneration;
+            int smallestIndex = smallestIndexes[0];
+            this.optimalGene = genes[smallestIndex].clone();
+            this.optimalServers = this.fitness(genes[smallestIndex]);
+        }
+
+        return result;
+    }
+
+    @Override
+    public int[] findSmallestIndexes(HashMap<Integer, Integer> fitnessForGenes, int geneNumberLeft) {
+        int[] result = new int[geneNumberLeft];
+        for (int i = 0; i < geneNumberLeft ; i++) {
+            int smallest = 2000000000;
+            int key = fitnessForGenes.size()+1;
+            for (int j = 0; j < fitnessForGenes.size(); j++) {
+                if (fitnessForGenes.get(j) < smallest) {
+                    smallest = fitnessForGenes.get(j);
+                    key = j;
+                }
+            }
+            result[i] = key;
+            fitnessForGenes.remove(key);
+        }
+        return result;
+    }
+
+    @Override
+    public int[][] crossOver(int[][] genes, int geneNumber) {
+        int vmNumber = VMAdds.size();
+        int[][] result = new int[geneNumber][vmNumber];
+
+        Random rand = new Random();
+        int geneOriginalNumber = genes.length;
+        int geneCrossStart = 0;
+        int geneCrossLength = 0;
+
+        int i = 0;
+        while (i < geneNumber - 1){
+            int[] gene1 = genes[rand.nextInt() % geneOriginalNumber];
+            int[] gene2 = genes[rand.nextInt() % geneOriginalNumber];
+            geneCrossStart = rand.nextInt() % vmNumber;
+            geneCrossLength = rand.nextInt() % (vmNumber - geneCrossStart);
+
+            for (int j = 0; j < vmNumber; j++) {
+                if (j >= geneCrossStart && j < geneCrossStart + geneCrossLength) {
+                    result[i][j] = gene2[j];
+                    result[i+1][j] = gene1[j];
+                }
+                else {
+                    result[i][j] = gene1[j];
+                    result[i+1][j] = gene2[j];
+                }
+            }
+
+            i += 2;
+        }
+
+        return result;
+    }
+
+    @Override
+    public void calculateOptimalBundle() {
+
+    }
+
+    @Override
+    public ArrayList<String> output() {
+        ArrayList<String> result = new ArrayList<String>();
+        return result;
     }
 }

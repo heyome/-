@@ -33,8 +33,17 @@ public interface IOperator{
 
     int[][] setGenesForAdds(int geneNumber);
 
-    int fitness(int[] genes);
+    ArrayList<IServer> fitness(int[] genes);
+
+    int fitnessScore(ArrayList<IServer> serversForGenes);
+
+    int[][] select(int[][] genes, int geneNumberLeft);
+
+    int[] findSmallestIndexes(HashMap<Integer, Integer> fitnessForGenes, int geneNumberLeft);
+
+    int[][] crossOver(int[][] genes, int geneNumber);
 
     void calculateOptimalBundle();
 
+    ArrayList<String> output();
 }
