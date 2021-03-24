@@ -63,18 +63,10 @@ public class Server implements IServer{
     //Add virtualMachine to Nodes
     public void addVirtualMachine(IVirtualMachine vm) {
         if (vm.ifS()) {
-            if (vm.getRam() >= vm.getCpuCores()){
-                if (this.a.getOccupiedRAM() <= this.b.getOccupiedRAM()) {
-                    this.a.addVirtualMachine(vm);
-                } else {
-                    this.b.addVirtualMachine(vm);
-                }
+            if (this.a.CanAdd(vm.getRam(), vm.getCpuCores())) {
+                this.a.addVirtualMachine(vm);
             } else {
-                if (this.a.getOccupiedCPU() <= this.b.getOccupiedCPU()) {
-                    this.a.addVirtualMachine(vm);
-                } else {
-                    this.b.addVirtualMachine(vm);
-                }
+                this.b.addVirtualMachine(vm);
             }
         }
         else {

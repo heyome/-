@@ -3,10 +3,7 @@ package com.huawei.java.main.Operator;
 import com.huawei.java.main.Model.IServer;
 import com.huawei.java.main.Model.IVirtualMachine;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Operator implements IOperator{
 
@@ -87,20 +84,24 @@ public class Operator implements IOperator{
     
     @Override
     public void assignedVM() {
-
+        int length = 0;
         for (Integer key: records.keySet()) {
             String[] vmsToAssign = records.get(key);
+
             for (int i = 0; i < vmsToAssign.length; i++) {
-                if (vmsToAssign[0] == "add") {
-                    String vmModel = vmsToAssign[1];
+                String[] vmInfo = this.splitString(vmsToAssign[i]);
+
+                if (vmInfo[0].equals("add")) {
+                    String vmModel = vmInfo[1];
                     IVirtualMachine vm = vms.get(vmModel).clone();
-                    Integer vmId = Integer.parseInt(vmsToAssign[2]);
+                    Integer vmId = Integer.parseInt(vmInfo[2]);
                     vm.setId(vmId);
                     this.assignedVM.put(vmId,vm);
                     this.VMAdds.add(vm);
                 }
             }
-            addsOnDay.add(vmsToAssign.length);
+            length += vmsToAssign.length;
+            addsOnDay.add(length);
         }
     }
 
@@ -329,7 +330,6 @@ public class Operator implements IOperator{
                 }
             }
 
-
             s = "(migration, 0)";
             this.log.add(s);
 
@@ -350,7 +350,6 @@ public class Operator implements IOperator{
         }
 
 
-
     }
 
     @Override
@@ -369,7 +368,18 @@ public class Operator implements IOperator{
                 serverList.add(server);
                 serverId++;
                 server = servers.get(0).clone();
+                server.setId(serverId);
             }
+
+            server.addVirtualMachine(vm);
+            vm.setPosition(server);
+            String string = "(" + vm.getPositionId();
+            if (vm.ifS()) {
+                string += ", " + vm.getPositionName() + ")";
+            } else {
+                string += ")";
+            }
+            vmRecords.add(string);
 
             if (i == addsOnDay.get(day)-1) {
                 String s = "(purchase, " + Integer.toString(serverId+1) + ")";
@@ -383,23 +393,15 @@ public class Operator implements IOperator{
                 day++;
             }
 
-            server.addVirtualMachine(vm);
-            vm.setPosition(server);
-            String string = "(" + vm.getPositionId();
-            if (vm.ifS()) {
-                string += ", " + vm.getPositionName() + ")";
-            } else {
-                string += ")";
-            }
-            vmRecords.add(string);
-
         }
+
     }
 
     @Override
     public ArrayList<String> output() {
         //this.calculateOptimalBundle();
         this.assignedVM();
+
         this.onlyBuyFirstServer();
         return this.log;
     }

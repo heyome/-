@@ -48,14 +48,14 @@ public class Node {
     //节点上增加虚拟机
     public void addVirtualMachine(IVirtualMachine vm) {
         if (vm.ifS()) {
-            if (this.occupiedCPU + vm.getCpuCores() < this.cpuCores && this.occupiedRAM + vm.getRam() < this.ram) {
+            if (this.occupiedCPU + vm.getCpuCores() <= this.cpuCores && this.occupiedRAM + vm.getRam() <= this.ram) {
                 this.occupiedRAM += vm.getRam();
                 this.occupiedCPU += vm.getCpuCores();
             } else {
                 throw new IllegalArgumentException("This node is full!");
             }
         } else {
-            if (this.occupiedCPU + vm.getCpuCores()/2 < this.cpuCores && this.occupiedRAM + vm.getRam()/2 < this.ram) {
+            if (this.occupiedCPU + vm.getCpuCores()/2 <= this.cpuCores && this.occupiedRAM + vm.getRam()/2 <= this.ram) {
                 this.occupiedRAM += vm.getRam()/2;
                 this.occupiedCPU += vm.getCpuCores()/2;
             } else {
@@ -97,6 +97,6 @@ public class Node {
     }
 
     public boolean CanAdd(int r,int c) {
-        return occupiedRAM + r < ram && occupiedCPU + c <cpuCores;
+        return occupiedRAM + r < ram && occupiedCPU + c < cpuCores;
     }
 }
