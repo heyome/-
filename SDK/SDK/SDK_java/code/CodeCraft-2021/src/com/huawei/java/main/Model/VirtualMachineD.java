@@ -57,4 +57,14 @@ public class VirtualMachineD implements IVirtualMachine{
     public int getId() {
         return id;
     }
+
+    @Override
+    public int getPositionId() {
+        return this.positionA.getId();
+    }
+
+    @Override
+    public String getPositionName() {
+        return "";
+    }
 }

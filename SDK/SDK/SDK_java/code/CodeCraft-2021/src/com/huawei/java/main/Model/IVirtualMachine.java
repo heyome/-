@@ -23,4 +23,8 @@ public interface IVirtualMachine {
     int getRam();
 
     int getId();
+
+    int getPositionId();
+
+    String getPositionName();
 }

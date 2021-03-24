@@ -83,4 +83,16 @@ public class Node {
         }
         this.vms.remove(vmId);
     }
+
+    public String getName() {
+        if (this.A) {
+            return "A";
+        } else {
+            return "B";
+        }
+    }
+
+    public int getId() {
+        return id;
+    }
 }

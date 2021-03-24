@@ -9,20 +9,26 @@ import java.util.List;
 import java.util.Random;
 
 public class Operator implements IOperator{
-    
+
+    //输入
     private List<IServer> servers = new ArrayList<IServer>();
     private HashMap<String,IVirtualMachine> vms = new HashMap<String, IVirtualMachine>();
-    
-    private HashMap<Integer,IServer> boughtServer = new HashMap<Integer,IServer>();
-    private HashMap<Integer,IVirtualMachine> assignedVM = new HashMap<Integer,IVirtualMachine>();
-    private ArrayList<IVirtualMachine> VMAdds = new ArrayList<IVirtualMachine>();
-    
     private HashMap<Integer,String[]> records;
+
+    //读取
+    private HashMap<Integer,IServer> boughtServer = new HashMap<Integer,IServer>();
+
+    private HashMap<Integer,IVirtualMachine> assignedVM = new HashMap<Integer,IVirtualMachine>();
+
+    private ArrayList<IVirtualMachine> VMAdds = new ArrayList<IVirtualMachine>();
+
     private ArrayList<Integer> addsOnDay = new ArrayList<Integer>();
 
+    //最佳方案
     private int optimalScore = 2000000000;
     private ArrayList<IServer> optimalServers;
     private int[] optimalGene;
+    private ArrayList<String> log = new ArrayList<String>();
 
 
     @Override
@@ -89,6 +95,7 @@ public class Operator implements IOperator{
                     String vmModel = vmsToAssign[1];
                     IVirtualMachine vm = vms.get(vmModel);
                     Integer vmId = Integer.parseInt(vmsToAssign[2]);
+                    vm.setId(vmId);
                     this.assignedVM.put(vmId,vm);
                     this.VMAdds.add(vm);
                 }
@@ -261,12 +268,92 @@ public class Operator implements IOperator{
 
     @Override
     public void calculateOptimalBundle() {
+        int[][] initialGenes = this.setGenesForAdds(100);
+        int iter =0;
+        while (iter < 1000) {
+            int[][] selectedGenes = this.select(initialGenes,8);
+            initialGenes = this.crossOver(selectedGenes,100);
+        }
+        
+        int vmNumber = this.VMAdds.size();
+        int serverNumber = 0;
+        int day =0;
+        ArrayList<IVirtualMachine> virtualMachines = new ArrayList<IVirtualMachine>();
+        ArrayList<ArrayList<IServer>> optimalS = new ArrayList<ArrayList<IServer>>();
+        ArrayList<IServer> serversOneDay = new ArrayList<IServer>();
+
+        for (int i = 0; i < vmNumber ; i++) {
+            if (this.optimalGene[i] == 0) {
+                virtualMachines.add(VMAdds.get(i));
+            }
+            else {
+                IServer server = this.optimalServers.get(serverNumber);
+                serverNumber++;
+                for (IVirtualMachine vm : virtualMachines) {
+                    server.addVirtualMachine(vm);
+                    vm.setPosition(server);
+                }
+                serversOneDay.add(server);
+                virtualMachines = new ArrayList<IVirtualMachine>();
+            }
+
+            if (i == this.addsOnDay.get(day) - 1) {
+                optimalS.add(serversOneDay);
+                serversOneDay = new ArrayList<IServer>();
+            }
+
+        }
+
+        int serverID = 0;
+        for (int i = 0; i < optimalS.size(); i++) {
+            ArrayList<IServer> sod = optimalS.get(i);
+            String s = "";
+            Integer q = sod.size();
+            s = "(purchase, " + Integer.toString(q) + ")";
+            this.log.add(s);
+            for (IServer server0 : this.servers) {
+                int serverQ = 0;
+                for (IServer server1 : sod) {
+                    if (server1.getModel() == server0.getModel()) {
+                        serverQ++;
+                        server1.setId(serverID);
+                        this.buyServer(server1,serverID);
+                        serverID++;
+                    }
+                }
+                if (serverQ != 0) {
+                    s = "(" + server0.getModel() + ", " + Integer.toString(serverQ) + ")";
+                    this.log.add(s);
+                }
+            }
+
+
+            s = "(migration, 0)";
+            this.log.add(s);
+
+
+            int initialIndex;
+            if (i == 0) {
+                initialIndex = 0;
+            }
+            else {
+                initialIndex = this.addsOnDay.get(i-1);
+            }
+            int finalIndex = this.addsOnDay.get(i);
+            while (initialIndex < finalIndex) {
+                IVirtualMachine vm0 = this.VMAdds.get(initialIndex);
+                s = "(" + Integer.toString(vm0.getPositionId()) + ", " + vm0.getPositionName() + ")";
+                this.log.add(s);
+            }
+        }
+
+
 
     }
 
     @Override
     public ArrayList<String> output() {
-        ArrayList<String> result = new ArrayList<String>();
-        return result;
+        this.calculateOptimalBundle();
+        return this.log;
     }
 }
