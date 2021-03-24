@@ -67,4 +67,10 @@ public class VirtualMachineD implements IVirtualMachine{
     public String getPositionName() {
         return "";
     }
+
+    @Override
+    public IVirtualMachine clone() {
+        return new VirtualMachineD(this.model, this.cpuCores, this.ram);
+    }
+
 }

@@ -45,5 +45,7 @@ public interface IOperator{
 
     void calculateOptimalBundle();
 
+    void onlyBuyFirstServer();
+
     ArrayList<String> output();
 }

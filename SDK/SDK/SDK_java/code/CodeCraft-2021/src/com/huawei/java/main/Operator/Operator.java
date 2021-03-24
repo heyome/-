@@ -93,7 +93,7 @@ public class Operator implements IOperator{
             for (int i = 0; i < vmsToAssign.length; i++) {
                 if (vmsToAssign[0] == "add") {
                     String vmModel = vmsToAssign[1];
-                    IVirtualMachine vm = vms.get(vmModel);
+                    IVirtualMachine vm = vms.get(vmModel).clone();
                     Integer vmId = Integer.parseInt(vmsToAssign[2]);
                     vm.setId(vmId);
                     this.assignedVM.put(vmId,vm);
@@ -221,9 +221,11 @@ public class Operator implements IOperator{
             int smallest = 2000000000;
             int key = fitnessForGenes.size()+1;
             for (int j = 0; j < fitnessForGenes.size(); j++) {
-                if (fitnessForGenes.get(j) < smallest) {
-                    smallest = fitnessForGenes.get(j);
-                    key = j;
+                if (fitnessForGenes.get(j) != null) {
+                    if (fitnessForGenes.get(j) < smallest) {
+                        smallest = fitnessForGenes.get(j);
+                        key = j;
+                    }
                 }
             }
             result[i] = key;
@@ -352,8 +354,53 @@ public class Operator implements IOperator{
     }
 
     @Override
+    public void onlyBuyFirstServer() {
+
+        int day = 0;
+        int serverId = 0;
+        IServer server = servers.get(0).clone();
+        ArrayList<IServer> serverList = new ArrayList<IServer>();
+        ArrayList<String> vmRecords = new ArrayList<String>();
+        server.setId(serverId);
+        for (int i = 0; i < VMAdds.size(); i++) {
+            IVirtualMachine vm = VMAdds.get(i);
+
+            if (!server.CanAdd(vm)) {
+                serverList.add(server);
+                serverId++;
+                server = servers.get(0).clone();
+            }
+
+            if (i == addsOnDay.get(day)-1) {
+                String s = "(purchase, " + Integer.toString(serverId+1) + ")";
+                this.log.add(s);
+                s = "(" + server.getModel() + ", " + Integer.toString(serverId +1) + ")";
+                this.log.add(s);
+                s = "(migration, 0)";
+                this.log.add(s);
+                this.log.addAll(vmRecords);
+                vmRecords = new ArrayList<String>();
+                day++;
+            }
+
+            server.addVirtualMachine(vm);
+            vm.setPosition(server);
+            String string = "(" + vm.getPositionId();
+            if (vm.ifS()) {
+                string += ", " + vm.getPositionName() + ")";
+            } else {
+                string += ")";
+            }
+            vmRecords.add(string);
+
+        }
+    }
+
+    @Override
     public ArrayList<String> output() {
-        this.calculateOptimalBundle();
+        //this.calculateOptimalBundle();
+        this.assignedVM();
+        this.onlyBuyFirstServer();
         return this.log;
     }
 }

@@ -95,4 +95,8 @@ public class Node {
     public int getId() {
         return id;
     }
+
+    public boolean CanAdd(int r,int c) {
+        return occupiedRAM + r < ram && occupiedCPU + c <cpuCores;
+    }
 }

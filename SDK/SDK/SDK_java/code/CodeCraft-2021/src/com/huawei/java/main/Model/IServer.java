@@ -30,4 +30,9 @@ public interface IServer {
 
     //删除虚拟机
     void deleteVM(int vmId);
+
+    //clone
+    IServer clone();
+
+    boolean CanAdd(IVirtualMachine vm);
 }

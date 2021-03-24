@@ -117,4 +117,18 @@ public class Server implements IServer{
             this.b.deleteVM(vmId);
         }
     }
+
+    @Override
+    public IServer clone() {
+        return new Server(this.model,this.cpuCores,this.ram, this.cost, this.dailyCost);
+    }
+
+    @Override
+    public boolean CanAdd(IVirtualMachine vm){
+        if (vm.ifS()) {
+            return this.a.CanAdd(vm.getRam(),vm.getCpuCores()) || this.b.CanAdd(vm.getRam(),vm.getCpuCores());
+        } else {
+            return this.a.CanAdd(vm.getRam()/2,vm.getCpuCores()/2) && this.b.CanAdd(vm.getRam()/2,vm.getCpuCores()/2);
+        }
+    }
 }

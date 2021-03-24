@@ -74,11 +74,15 @@ public class Main {
 
             operator.setRecords(records);
 
-            System.out.println(s);
+            ArrayList<String> output = operator.output();
+            for (String str : output) {
+                System.out.println(str);
+            }
+
+            //System.out.flush();
 
         } catch (IOException e) {
             e.printStackTrace();
-
 
         }
 

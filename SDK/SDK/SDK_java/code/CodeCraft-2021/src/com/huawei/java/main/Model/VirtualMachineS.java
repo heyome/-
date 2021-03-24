@@ -64,5 +64,10 @@ public class VirtualMachineS implements IVirtualMachine{
         return this.position.getName();
     }
 
+    @Override
+    public IVirtualMachine clone() {
+        return new VirtualMachineS(this.model, this.cpuCores, this.ram);
+    }
+
 
 }
