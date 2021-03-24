@@ -10,6 +10,7 @@ import com.huawei.java.main.Operator.Operator;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,7 +25,7 @@ public class Main {
         String path = "C:\\Users\\User\\Desktop\\hwrt\\SDK\\SDK\\SDK_java\\code\\CodeCraft-2021\\src\\com\\huawei\\java\\main\\training-data\\training-1.txt";
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(path));
+            reader = new BufferedReader(new InputStreamReader(System.in));
             String serverModels = reader.readLine();
             IOperator operator = new Operator();
 
