@@ -25,7 +25,8 @@ public class Main {
         String path = "C:\\Users\\User\\Desktop\\hwrt\\SDK\\SDK\\SDK_java\\code\\CodeCraft-2021\\src\\com\\huawei\\java\\main\\training-data\\training-1.txt";
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(System.in));
+            //reader = new BufferedReader(new InputStreamReader(System.in));
+            reader = new BufferedReader(new FileReader(path));
             String serverModels = reader.readLine();
             IOperator operator = new Operator();
 

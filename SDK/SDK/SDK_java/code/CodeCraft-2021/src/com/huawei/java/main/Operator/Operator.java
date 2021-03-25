@@ -105,6 +105,8 @@ public class Operator implements IOperator{
         }
     }
 
+    //开始一系列基因 [1,0,0,1]
+    //每一天都最后一条增加的一定是1
     @Override
     public int[][] setGenesForAdds(int geneNumber) {
         Random rand = new Random(1000);
@@ -271,11 +273,11 @@ public class Operator implements IOperator{
 
     @Override
     public void calculateOptimalBundle() {
-        int[][] initialGenes = this.setGenesForAdds(100);
+        int[][] initialGenes = this.setGenesForAdds(10000);
         int iter =0;
         while (iter < 1000) {
-            int[][] selectedGenes = this.select(initialGenes,8);
-            initialGenes = this.crossOver(selectedGenes,100);
+            int[][] selectedGenes = this.select(initialGenes,100);
+            initialGenes = this.crossOver(selectedGenes,10000);
         }
         
         int vmNumber = this.VMAdds.size();
@@ -352,6 +354,7 @@ public class Operator implements IOperator{
 
     }
 
+    //只买第一种
     @Override
     public void onlyBuyFirstServer() {
 
@@ -399,10 +402,10 @@ public class Operator implements IOperator{
 
     @Override
     public ArrayList<String> output() {
-        //this.calculateOptimalBundle();
         this.assignedVM();
+        this.calculateOptimalBundle();
 
-        this.onlyBuyFirstServer();
+        //this.onlyBuyFirstServer();
         return this.log;
     }
 }
