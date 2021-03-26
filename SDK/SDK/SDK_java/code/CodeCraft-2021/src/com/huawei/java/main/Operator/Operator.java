@@ -2,13 +2,14 @@ package com.huawei.java.main.Operator;
 
 import com.huawei.java.main.Model.IServer;
 import com.huawei.java.main.Model.IVirtualMachine;
+import com.huawei.java.main.Model.Server;
 
 import java.util.*;
 
 public class Operator implements IOperator{
 
     //输入
-    private List<IServer> servers = new ArrayList<IServer>();
+    private ArrayList<IServer> servers = new ArrayList<IServer>();
     private HashMap<String,IVirtualMachine> vms = new HashMap<String, IVirtualMachine>();
     private HashMap<Integer,String[]> records;
 
@@ -32,6 +33,7 @@ public class Operator implements IOperator{
     public void addServer(IServer server) {
         this.servers.add(server);
     }
+
 
     @Override
     public void addVirtualMachine(IVirtualMachine vm) {
@@ -276,7 +278,7 @@ public class Operator implements IOperator{
         int[][] initialGenes = this.setGenesForAdds(10000);
         int iter =0;
         while (iter < 1000) {
-            int[][] selectedGenes = this.select(initialGenes,100);
+            int[][] selectedGenes = this.select(initialGenes,2);
             initialGenes = this.crossOver(selectedGenes,10000);
         }
         
@@ -362,8 +364,11 @@ public class Operator implements IOperator{
         int serverId = 0;
         IServer server = servers.get(0).clone();
         ArrayList<IServer> serverList = new ArrayList<IServer>();
+        ArrayList<IServer> serversAdds = new ArrayList<IServer>();
         ArrayList<String> vmRecords = new ArrayList<String>();
         server.setId(serverId);
+        serverList.add(server);
+        serversAdds.add(server);
         for (int i = 0; i < VMAdds.size(); i++) {
             IVirtualMachine vm = VMAdds.get(i);
 
@@ -372,6 +377,8 @@ public class Operator implements IOperator{
                 serverId++;
                 server = servers.get(0).clone();
                 server.setId(serverId);
+                serverList.add(server);
+                serversAdds.add(server);
             }
 
             server.addVirtualMachine(vm);
@@ -385,14 +392,15 @@ public class Operator implements IOperator{
             vmRecords.add(string);
 
             if (i == addsOnDay.get(day)-1) {
-                String s = "(purchase, " + Integer.toString(serverId+1) + ")";
+                String s = "(purchase, " + Integer.toString(serversAdds.size()) + ")";
                 this.log.add(s);
-                s = "(" + server.getModel() + ", " + Integer.toString(serverId +1) + ")";
+                s = "(" + server.getModel() + ", " + Integer.toString(serversAdds.size()) + ")";
                 this.log.add(s);
                 s = "(migration, 0)";
                 this.log.add(s);
                 this.log.addAll(vmRecords);
                 vmRecords = new ArrayList<String>();
+                serversAdds = new ArrayList<IServer>();
                 day++;
             }
 
@@ -406,6 +414,7 @@ public class Operator implements IOperator{
         this.calculateOptimalBundle();
 
         //this.onlyBuyFirstServer();
+
         return this.log;
     }
 }

@@ -4,6 +4,7 @@ public interface IServer {
 
     //Getters
 
+
     String getModel();
 
     int getCpuCores();
@@ -35,4 +36,5 @@ public interface IServer {
     IServer clone();
 
     boolean CanAdd(IVirtualMachine vm);
+
 }

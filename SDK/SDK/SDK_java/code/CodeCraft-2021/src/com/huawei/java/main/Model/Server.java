@@ -1,7 +1,7 @@
 package com.huawei.java.main.Model;
 
 public class Server implements IServer{
-    private static String model;
+    private String model;
     private int cpuCores;
     private int ram;
     private int cost;
@@ -10,7 +10,7 @@ public class Server implements IServer{
     private Node a = new Node(true);
     private Node b = new Node(false);
 
-    public Server(String model,int cpuCores,int ram, int cost, int dailyCost) {
+    public Server(String model, int cpuCores,int ram, int cost, int dailyCost) {
         this.model = model;
         this.cpuCores = cpuCores;
         this.ram = ram;
@@ -77,18 +77,10 @@ public class Server implements IServer{
 
     @Override
     public Node selectNode(IVirtualMachine vm) {
-        if (vm.getRam() >= vm.getCpuCores()){
-            if (this.a.getOccupiedRAM() <= this.b.getOccupiedRAM()) {
-                return this.a;
-            } else {
-                return this.b;
-            }
+        if (this.a.CanAdd(vm.getRam(),vm.getCpuCores())) {
+            return this.a;
         } else {
-            if (this.a.getOccupiedCPU() <= this.b.getOccupiedCPU()) {
-                return this.a;
-            } else {
-                return this.b;
-            }
+            return this.b;
         }
 
     }
@@ -123,4 +115,6 @@ public class Server implements IServer{
             return this.a.CanAdd(vm.getRam()/2,vm.getCpuCores()/2) && this.b.CanAdd(vm.getRam()/2,vm.getCpuCores()/2);
         }
     }
+
+
 }

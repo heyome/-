@@ -2,7 +2,7 @@ package com.huawei.java.main.Model;
 
 public class VirtualMachineS implements IVirtualMachine{
 
-    private static String model;
+    private String model;
     private int cpuCores;
     private int ram;
     private int id = -1;
